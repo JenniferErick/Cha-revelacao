@@ -33,7 +33,7 @@
     form {
       margin-top: 30px;
     }
-    input, button {
+    input, button, textarea {
       padding: 10px;
       margin: 5px;
       font-size: 1em;
@@ -52,17 +52,15 @@
       margin-top: 40px;
       font-size: 0.9em;
       color: #555;
+    
+    #lista-convidados {
+      list-style-type: none;
+      padding: 0;
+      margin-top: 20px;
     }
-    .balloon {
-      position: absolute;
-      bottom: -100px;
-      width: 40px;
-      animation: float 10s infinite ease-in;
-    }
-    @keyframes float {
-      0% { bottom: -100px; left: 10%; opacity: 0; }
-      50% { opacity: 1; }
-      100% { bottom: 100%; left: 80%; opacity: 0; }
+    #lista-convidados li {
+      margin: 5px 0;
+      font-weight: bold;
     }
   </style>
 </head>
@@ -80,13 +78,16 @@
     <div class="countdown" id="countdown"></div>
 
     <form>
-<p><strong>Confirme sua presença</strong>:</p>
-<label for="nome">Nome completo:</label><br>
-<input id="nome" type="text" placeholder="Seu nome completo" required><br>
-<label for="observacao">Observações:</label><br>
-<textarea id="observacao" placeholder="Deixe aqui alguma observação (opcional)" rows="4" cols="40"></textarea><br>
-<button type="submit">Confirmar presença</button>
-</form>
+      <p><strong>Confirme sua presença</strong>:</p>
+      <label for="nome">Nome completo:</label><br>
+      <input id="nome" type="text" placeholder="Seu nome completo" required><br>
+      <label for="observacao">Observações:</label><br>
+      <textarea id="observacao" placeholder="Deixe aqui alguma observação (opcional)" rows="4" cols="40"></textarea><br>
+      <button type="submit">Confirmar presença</button>
+    </form>
+
+    <h3>Lista de Convidados Confirmados:</h3>
+    <ul id="lista-convidados"></ul>
 
     <audio controls autoplay loop style="margin-top: 30px;">
       <source src="https://www.example.com/audio/pra-voce-guardei-o-amor.mp3" type="audio/mpeg">
@@ -97,10 +98,6 @@
   <footer>
     <p>Com carinho, Jennifer & Erick</p>
   </footer>
-
-  <img src="https://cdn-icons-png.flaticon.com/512/3468/3468835.png" class="balloon" style="left:10%; animation-delay: 0s;">
-  <img src="https://cdn-icons-png.flaticon.com/512/3468/3468852.png" class="balloon" style="left:40%; animation-delay: 3s;">
-  <img src="https://cdn-icons-png.flaticon.com/512/3468/3468854.png" class="balloon" style="left:70%; animation-delay: 5s;">
 
   <script>
     const countdownElement = document.getElementById('countdown');
@@ -121,6 +118,23 @@
         countdownElement.innerHTML = "O grande dia chegou!";
       }
     }, 1000);
+
+    document.querySelector('form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const nomeInput = document.getElementById('nome');
+      const nome = nomeInput.value.trim();
+
+      if (nome) {
+        const lista = document.getElementById('lista-convidados');
+        const item = document.createElement('li');
+        item.textContent = nome;
+        lista.appendChild(item);
+
+        nomeInput.value = '';
+        document.getElementById('observacao').value = '';
+      }
+    });
   </script>
 </body>
 </html>
